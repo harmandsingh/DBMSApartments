@@ -15,13 +15,15 @@ CREATE TABLE FLOORPLAN(
 CREATE TABLE AMENITY(
     amenity_id int auto_increment not null primary key,
     property_id int,
-    name varchar(64)
+    name varchar(64),
+    foreign key (property_id) references PROPERTY(property_id)
 );
 
 CREATE TABLE PARKING(
   parking_id int auto_increment not null primary key,
   unit_id int,
-  space_no int
+  space_no int,
+  foreign key (unit_id) references UNIT(unit_id)
 );
 
 CREATE TABLE UNIT(
@@ -31,8 +33,9 @@ CREATE TABLE UNIT(
     occupied bool,
     leased bool,
     unit_no int,
-    lease_info_id int
-
+    lease_info_id int,
+    foreign key (property_id) references PROPERTY(property_id),
+    foreign key (floorplan_id) references FLOORPLAN(floorplan_id)
 );
 
 CREATE TABLE LEASE_INFO(
@@ -50,7 +53,9 @@ CREATE TABLE LEASE_TERM(
     unit_id int,
     rental_rate_id int,
     primary key (lease_term_id, unit_id, rental_rate_id),
-    term_length int
+    term_length int,
+    lease_info_id_fk int not null,
+    foreign key (lease_info_id_fk) references LEASE_INFO(lease_info_id)
 );
 
 CREATE TABLE APPLICATION(
@@ -60,7 +65,8 @@ CREATE TABLE APPLICATION(
     unit_id int,
     employee_id int,
     submit_date date,
-    processing_date date
+    processing_date date,
+    foreign key (renter_id) references GUEST_CARD(guest_card_id)
 );
 
 CREATE TABLE EMPLOYEE(
@@ -78,13 +84,17 @@ CREATE TABLE LEASE_AGREEMENT(
     unit_id int,
     lease_term_id int,
     start_date date,
-    end_date date
+    end_date date,
+    foreign key (application_id) references APPLICATION(application_id)
 );
 
 CREATE TABLE RESIDENT(
     resident_id int auto_increment not null primary key,
     guest_card_id int,
-    unit_id int
+    unit_id int,
+    unit_no int,
+    foreign key (guest_card_id) references GUEST_CARD(guest_card_id),
+    foreign key (unit_id) references UNIT(unit_id)
 );
 
 CREATE TABLE GUEST_CARD(
@@ -93,10 +103,13 @@ CREATE TABLE GUEST_CARD(
     last_name varchar(15),
     age int,
     income int,
+    email varchar(128),
     phone_number int,
     number_pets int,
     mailing_address varchar(128),
-    applied boolean
+    applied boolean,
+    employee_id_fk int not null,
+    foreign key (employee_id_fk) references EMPLOYEE (employee_id)
 );
 
 CREATE TABLE WORK_ORDER(
@@ -105,6 +118,8 @@ CREATE TABLE WORK_ORDER(
    unit_id int,
    resident_id int,
    priority varchar(8),
-   pte boolean
+   pte boolean,
+   foreign key (unit_id) references UNIT(unit_id),
+   foreign key (resident_id) references RESIDENT(resident_id)
 );
 
