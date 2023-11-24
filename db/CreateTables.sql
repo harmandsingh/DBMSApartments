@@ -19,13 +19,6 @@ CREATE TABLE AMENITY(
     foreign key (property_id) references PROPERTY(property_id)
 );
 
-CREATE TABLE PARKING(
-  parking_id int auto_increment not null primary key,
-  unit_id int,
-  space_no int,
-  foreign key (unit_id) references UNIT(unit_id)
-);
-
 CREATE TABLE UNIT(
     unit_id int auto_increment not null primary key,
     property_id int,
@@ -36,6 +29,13 @@ CREATE TABLE UNIT(
     lease_info_id int,
     foreign key (property_id) references PROPERTY(property_id),
     foreign key (floorplan_id) references FLOORPLAN(floorplan_id)
+);
+
+CREATE TABLE PARKING(
+  parking_id int auto_increment not null primary key,
+  unit_id int,
+  space_no int,
+  foreign key (unit_id) references UNIT(unit_id)
 );
 
 CREATE TABLE LEASE_INFO(
@@ -58,6 +58,30 @@ CREATE TABLE LEASE_TERM(
     foreign key (lease_info_id_fk) references LEASE_INFO(lease_info_id)
 );
 
+CREATE TABLE EMPLOYEE(
+    employee_id int auto_increment not null primary key,
+    first_name varchar(15),
+    last_name varchar(15),
+    role varchar(25),
+    hire_date date,
+    active boolean
+);
+
+CREATE TABLE GUEST_CARD(
+    guest_card_id int auto_increment not null primary key,
+    first_name varchar(15),
+    last_name varchar(15),
+    age int,
+    income int,
+    email varchar(128),
+    phone_number int,
+    number_pets int,
+    mailing_address varchar(128),
+    applied boolean,
+    employee_id_fk int not null,
+    foreign key (employee_id_fk) references EMPLOYEE (employee_id)
+);
+
 CREATE TABLE APPLICATION(
     application_id int auto_increment not null,
     renter_id int,
@@ -67,15 +91,6 @@ CREATE TABLE APPLICATION(
     submit_date date,
     processing_date date,
     foreign key (renter_id) references GUEST_CARD(guest_card_id)
-);
-
-CREATE TABLE EMPLOYEE(
-    employee_id int auto_increment not null primary key,
-    first_name varchar(15),
-    last_name varchar(15),
-    role varchar(25),
-    hire_date date,
-    active boolean
 );
 
 CREATE TABLE LEASE_AGREEMENT(
@@ -95,21 +110,6 @@ CREATE TABLE RESIDENT(
     unit_no int,
     foreign key (guest_card_id) references GUEST_CARD(guest_card_id),
     foreign key (unit_id) references UNIT(unit_id)
-);
-
-CREATE TABLE GUEST_CARD(
-    guest_card_id int auto_increment not null primary key,
-    first_name varchar(15),
-    last_name varchar(15),
-    age int,
-    income int,
-    email varchar(128),
-    phone_number int,
-    number_pets int,
-    mailing_address varchar(128),
-    applied boolean,
-    employee_id_fk int not null,
-    foreign key (employee_id_fk) references EMPLOYEE (employee_id)
 );
 
 CREATE TABLE WORK_ORDER(
