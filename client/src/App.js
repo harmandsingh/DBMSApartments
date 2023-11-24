@@ -3,6 +3,8 @@ import Add from "./pages/Add";
 import Employee from "./pages/Employee";
 import Update from "./pages/Update";
 
+export const ServerUrl = "http://localhost:8800/";
+
 function App() {
   return (
     <div className="app">

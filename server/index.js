@@ -15,7 +15,7 @@ const db = mysql2.createConnection({
 });
 
 app.get("/", (req, res) => {
-  res.json("hello");
+  res.status(200).json("Hello, welcome to the web server!");
 });
 
 app.get("/employee", (req, res) => {

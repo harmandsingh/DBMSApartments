@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ServerUrl } from "../App";
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
@@ -10,7 +11,7 @@ const Employee = () => {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/employee");
+        const res = await axios.get(ServerUrl + "employee");
         setEmployees(res.data);
       } catch (err) {
         console.log(err);
